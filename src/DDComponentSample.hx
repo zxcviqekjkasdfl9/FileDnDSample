@@ -65,6 +65,8 @@ class DDComponentSample {
             dataurl.onload = logFileAsURL;
             dataurl.readAsDataURL(file);
         }
+
+        log('dnd coordinates: ${e.offsetX}, ${e.offsetY}');
     }
 
     private static function logFileAsText(e: ProgressEvent): Void {
