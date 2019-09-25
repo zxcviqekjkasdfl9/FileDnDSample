@@ -54,16 +54,27 @@ class DDComponentSample {
         var files: FileList = e.dataTransfer.files;
         for (pos in 0...files.length) {
             var file: File = files.item(pos);
-            var reader: FileReader = new FileReader();
+            var text: FileReader = new FileReader();
+            var dataurl: FileReader = new FileReader();
 
-            reader.onload = logFile;
-            reader.readAsText(file);
+            log(file);
+
+            text.onload = logFileAsText;
+            text.readAsText(file);
+            
+            dataurl.onload = logFileAsURL;
+            dataurl.readAsDataURL(file);
         }
     }
 
-    private static function logFile(e: ProgressEvent): Void {
-        var reader: FileReader = cast(e.target);
-        log('head 10 characters is: ${reader.result.substring(0, 10)}');
+    private static function logFileAsText(e: ProgressEvent): Void {
+        var text: FileReader = cast(e.target);
+        log('head 20 characters is: ${text.result.substring(0, 20)}');
+    }
+
+    private static function logFileAsURL(e: ProgressEvent): Void {
+        var dataurl: FileReader = cast(e.target);
+        log('head 50 dataurl is: ${dataurl.result.substring(0, 50)}');
     }
 
     private static function stopEvent(e: DragEvent): Void {
