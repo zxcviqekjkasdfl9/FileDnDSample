@@ -5,6 +5,8 @@ import js.html.CanvasRenderingContext2D;
 import js.html.FileReader;
 import js.html.FormData;
 import js.html.DragEvent;
+import js.html.DataTransfer;
+import js.html.FileList;
 
 class DDComponentSample {
     private static var dnd: CanvasElement;
@@ -47,7 +49,10 @@ class DDComponentSample {
 
     private static function logFiles(e: DragEvent): Void {
         stopEvent(e);
-        
+        var files: FileList = e.dataTransfer.files;
+        for (pos in 0...files.length) {
+            log(files.item(pos));
+        }
     }
 
     private static function stopEvent(e: DragEvent): Void {
