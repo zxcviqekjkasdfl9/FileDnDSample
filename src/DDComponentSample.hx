@@ -7,6 +7,8 @@ import js.html.FormData;
 import js.html.DragEvent;
 import js.html.DataTransfer;
 import js.html.FileList;
+import js.html.File;
+import js.html.ProgressEvent;
 
 class DDComponentSample {
     private static var dnd: CanvasElement;
@@ -44,15 +46,24 @@ class DDComponentSample {
         for (stop in ["drag", "dragstart", "dragend", "dragover", "dragenter", "dragleave"]) {
             dnd.addEventListener(stop, stopEvent);
         }
-        dnd.addEventListener("drop", logFiles);
+        dnd.addEventListener("drop", readFiles);
     }
 
-    private static function logFiles(e: DragEvent): Void {
+    private static function readFiles(e: DragEvent): Void {
         stopEvent(e);
         var files: FileList = e.dataTransfer.files;
         for (pos in 0...files.length) {
-            log(files.item(pos));
+            var file: File = files.item(pos);
+            var reader: FileReader = new FileReader();
+
+            reader.onload = logFile;
+            reader.readAsText(file);
         }
+    }
+
+    private static function logFile(e: ProgressEvent): Void {
+        var reader: FileReader = cast(e.target);
+        log('head 10 characters is: ${reader.result.substring(0, 10)}');
     }
 
     private static function stopEvent(e: DragEvent): Void {
