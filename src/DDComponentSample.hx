@@ -4,6 +4,7 @@ import js.html.Window;
 import js.html.CanvasRenderingContext2D;
 import js.html.FileReader;
 import js.html.FormData;
+import js.html.DragEvent;
 
 class DDComponentSample {
     private static var dnd: CanvasElement;
@@ -18,6 +19,11 @@ class DDComponentSample {
         
         var dndenabled: Bool = dndEnabled();
         log('the browser supports file drag and drop: ${dndenabled}');
+        if (!dndenabled) {
+            return;
+        }
+
+        hookdnd();
     }
 
     private static function dndEnabled(): Bool {
@@ -30,6 +36,23 @@ class DDComponentSample {
         } else {
             return false;
         }
+    }
+
+    private static function hookdnd(): Void {
+        for (stop in ["drag", "dragstart", "dragend", "dragover", "dragenter", "dragleave"]) {
+            dnd.addEventListener(stop, stopEvent);
+        }
+        dnd.addEventListener("drop", logFiles);
+    }
+
+    private static function logFiles(e: DragEvent): Void {
+        stopEvent(e);
+        
+    }
+
+    private static function stopEvent(e: DragEvent): Void {
+        e.preventDefault();
+        e.stopPropagation();
     }
 
     private static function hookfit(): Void {
