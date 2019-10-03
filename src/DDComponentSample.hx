@@ -43,10 +43,16 @@ class DDComponentSample {
     }
 
     private static function hookdnd(): Void {
-        for (stop in ["drag", "dragstart", "dragend", "dragover", "dragenter", "dragleave"]) {
+        for (stop in ["drag", "dragstart", "dragend", "dragenter", "dragleave"]) {
             dnd.addEventListener(stop, stopEvent);
         }
         dnd.addEventListener("drop", readFiles);
+        dnd.addEventListener("dragover", showFiles);
+    }
+
+    private static function showFiles(e: DragEvent): Void {
+        stopEvent(e);
+        Browser.window.console.log(e);
     }
 
     private static function readFiles(e: DragEvent): Void {
